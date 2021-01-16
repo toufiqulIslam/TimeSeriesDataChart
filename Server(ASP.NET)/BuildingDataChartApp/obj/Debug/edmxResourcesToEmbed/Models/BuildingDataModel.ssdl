@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BuildingDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Building">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Location" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="DataField">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Object">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'BuildingData.dbo.Reading' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Reading">
+    <Key>
+      <PropertyRef Name="BuildingId" />
+      <PropertyRef Name="ObjectId" />
+      <PropertyRef Name="DataFieldId" />
+      <PropertyRef Name="Value" />
+      <PropertyRef Name="Timestamp" />
+    </Key>
+    <Property Name="BuildingId" Type="smallint" Nullable="false" />
+    <Property Name="ObjectId" Type="tinyint" Nullable="false" />
+    <Property Name="DataFieldId" Type="tinyint" Nullable="false" />
+    <Property Name="Value" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Timestamp" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="BuildingDataModelStoreContainer">
+    <EntitySet Name="Building" EntityType="Self.Building" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DataField" EntityType="Self.DataField" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Object" EntityType="Self.Object" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reading" EntityType="Self.Reading" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Reading].[BuildingId] AS [BuildingId], 
+    [Reading].[ObjectId] AS [ObjectId], 
+    [Reading].[DataFieldId] AS [DataFieldId], 
+    [Reading].[Value] AS [Value], 
+    [Reading].[Timestamp] AS [Timestamp]
+    FROM [dbo].[Reading] AS [Reading]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>
